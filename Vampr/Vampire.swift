@@ -34,22 +34,37 @@ class Vampire {
   
   /// Adds the vampire as an offspring of this vampire
   func add(offspring: Vampire) {
-  
+    self.offspring.append(offspring)
+    offspring.creator = self
   }
   
   /// The total number of vampires created by that vampire
   var numberOfOffspring: Int {
-    return -1
+    return self.offspring.count
   }
   
   /// Returns the number of vampires away from the original vampire this vampire is
   var numberOfVampiresFromOriginal: Int {
-    return -1
+    var numberOfVampires = 0
+    var currentVampire = self
+    
+    while true {
+      guard let creator = currentVampire.creator else {
+        break
+      }
+      currentVampire = creator
+      numberOfVampires += 1
+    }
+    return numberOfVampires
   }
   
   /// Returns true if this vampire is more senior than the other vampire. (Who is closer to the original vampire)
   func isMoreSenior(than vampire: Vampire) -> Bool {
-    return false
+    if self.numberOfVampiresFromOriginal < vampire.numberOfVampiresFromOriginal {
+      return true
+    } else {
+      return false
+    }
   }
   
   // MARK: Stretch 
